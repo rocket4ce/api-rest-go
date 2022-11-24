@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -25,7 +26,14 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func MovieList(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Movie List")
+	movies := Movies{
+		Movie{"Sin limite 2013", 2013, "123"},
+		Movie{"Sin limite 2013", 2013, "123"},
+		Movie{"Sin limite 2013", 2013, "123"},
+		Movie{"Sin limite 2013", 2013, "123"},
+		Movie{"Sin limite 2013", 2013, "123"},
+	}
+	json.NewEncoder(w).Encode(movies)
 }
 func GetMovie(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
