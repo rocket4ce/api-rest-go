@@ -20,7 +20,7 @@ var movies = Movies{
 }
 
 func GetSession() *mgo.Session {
-	session, err := mgo.Dial("mongodb://root:example@localhost:27017/")
+	session, err := mgo.Dial("mongodb://root:example@mongo:27017")
 	if err != nil {
 		panic(err)
 	}
@@ -51,6 +51,13 @@ func AddMovie(w http.ResponseWriter, r *http.Request) {
 
 	defer r.Body.Close()
 	// log.Println(movie_data)
-	collection.Insert(movie_data)
+	err = collection.Insert(movie_data)
+	if err != nil {
+		w.WriteHeader(500)
+	}
+	json.NewEncoder(w).Encode(movie_data)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
 	// movies = append(movies, movie_data)
+
 }
