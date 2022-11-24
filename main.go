@@ -12,6 +12,6 @@ func main() {
 	router := NewRouter()
 	// nil variable vacia
 	fmt.Println("el servidor esta arriba")
-	server := http.ListenAndServe(":8080", router)
+	server := http.ListenAndServe("0.0.0.0:8080", router)
 	log.Fatal(server)
 }
