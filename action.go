@@ -3,11 +3,13 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2"
 )
+
+var collection = GetSession().DB("course-go").C("movies")
 
 var movies = Movies{
 	Movie{"Sin limite 2013", 2013, "123"},
@@ -15,6 +17,14 @@ var movies = Movies{
 	Movie{"Sin limite 2013", 2013, "123"},
 	Movie{"Sin limite 2013", 2013, "123"},
 	Movie{"Sin limite 2013", 2013, "123"},
+}
+
+func GetSession() *mgo.Session {
+	session, err := mgo.Dial("mongodb://root:example@localhost:27017/")
+	if err != nil {
+		panic(err)
+	}
+	return session
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -40,6 +50,7 @@ func AddMovie(w http.ResponseWriter, r *http.Request) {
 	}
 
 	defer r.Body.Close()
-	log.Println(movie_data)
-	movies = append(movies, movie_data)
+	// log.Println(movie_data)
+	collection.Insert(movie_data)
+	// movies = append(movies, movie_data)
 }
